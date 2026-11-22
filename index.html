@@ -115,16 +115,6 @@
     padding: .1em .35em;
     border-radius: 4px;
   }
-
-  footer {
-    margin-top: 3rem;
-    padding-top: 1rem;
-    border-top: 1px solid var(--border);
-    font-size: .8rem;
-    color: var(--muted);
-  }
-
-  footer a { color: inherit; }
 </style>
 </head>
 <body>
@@ -136,35 +126,30 @@
   <div id="status" class="status">Loading key…</div>
   <div id="warning" class="warn" hidden></div>
 
-  <!-- Shown when sq.cert is ASCII armored -->
+  <!-- Shown when cert is ASCII armored -->
   <section id="armored" hidden>
     <h2>Key (ASCII armored)</h2>
     <pre id="key"></pre>
     <div class="actions">
       <button id="copy">Copy key</button>
-      <a class="btn" href="sq.cert" download="sq.cert">Download sq.cert</a>
+      <a class="btn" href="cert" download="cert">Download cert</a>
     </div>
   </section>
 
-  <!-- Shown when sq.cert is binary OpenPGP -->
+  <!-- Shown when cert is binary OpenPGP -->
   <section id="binary" hidden>
     <h2>Key file</h2>
     <p>
-      The certificate is stored in binary OpenPGP format (<code>sq.cert</code>).
+      The certificate is stored in binary OpenPGP format (<code>cert</code>).
       Download it and import it with:
     </p>
-    <pre><code>sq cert import sq.cert
+    <pre><code>sq cert import cert
 # or
-gpg --import sq.cert</code></pre>
+gpg --import cert</code></pre>
     <div class="actions">
-      <a class="btn" href="sq.cert" download="sq.cert">Download sq.cert</a>
+      <a class="btn" href="cert" download="cert">Download cert</a>
     </div>
   </section>
-
-  <footer>
-    Verify the fingerprint after import:
-    <code>sq cert export --armor sq.cert | gpg --show-keys</code>
-  </footer>
 
 </main>
 
@@ -178,7 +163,7 @@ gpg --import sq.cert</code></pre>
 
   async function init() {
     try {
-      const res = await fetch('sq.cert', { cache: 'no-cache' });
+      const res = await fetch('cert', { cache: 'no-cache' });
       if (!res.ok) throw new Error('HTTP ' + res.status);
 
       const buf = await res.arrayBuffer();
@@ -206,7 +191,7 @@ gpg --import sq.cert</code></pre>
       }
     } catch (err) {
       statusEl.classList.add('error');
-      statusEl.textContent = 'Could not load sq.cert (' + err.message + ').';
+      statusEl.textContent = 'Could not load cert (' + err.message + ').';
       // Still offer the raw file for download
       binaryEl.hidden = false;
     }
